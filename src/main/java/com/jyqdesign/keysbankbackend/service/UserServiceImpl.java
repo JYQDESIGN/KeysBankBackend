@@ -1,6 +1,9 @@
 package com.jyqdesign.keysbankbackend.service;
 
+import com.jyqdesign.keysbankbackend.entity.CheckBook;
+import com.jyqdesign.keysbankbackend.entity.CreditCard;
 import com.jyqdesign.keysbankbackend.entity.User;
+import com.jyqdesign.keysbankbackend.entity.UserAccountProfile;
 import com.jyqdesign.keysbankbackend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +46,46 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteUser(long id) {
 
+    }
+
+    // CREDIT CARD CRUD
+
+    @Override
+    public CreditCard createCard(CreditCard newCard) {
+        return this.userRepository.createCard(newCard);
+    }
+
+    @Override
+    public CreditCard updateCard(long id, boolean active) {
+        return this.userRepository.updateCard(id, active);
+    }
+
+    @Override
+    public boolean deleteCard(long id) {
+        return this.userRepository.deleteCard(id);
+    }
+
+    // CHECK BOOK CRUD
+
+    @Override
+    public CheckBook createCheckBook(CheckBook newCheck) {
+        return this.userRepository.createCheckBook(newCheck);
+    }
+
+    @Override
+    public CheckBook updateCheckBook(long id, boolean active) {
+        return this.userRepository.updateCheckBox(id, active);
+    }
+
+    @Override
+    public boolean deleteCheckBook(long id) {
+        return this.userRepository.deleteCheckBook(id);
+    }
+
+    // PROFILE
+
+    @Override
+    public UserAccountProfile updateProfile(long id, UserAccountProfile profile) {
+        return this.userRepository.updateProfile(id, profile);
     }
 }

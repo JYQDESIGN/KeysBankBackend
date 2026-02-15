@@ -66,7 +66,7 @@ CREATE TABLE ACCOUNT_USER_PROFILE
     id_profile              BIGINT          NOT NULL PRIMARY KEY IDENTITY (1,1),
     id_user                 BIGINT          NULL,
     id_account              BIGINT          NULL,
-    user_role               VARCHAR(16)     DEFAULT 'HOLDER' CHECK ((user_role IN ('ADMIN', 'HOLDER', 'VIEWER'))),
+    user_role               VARCHAR(16)     DEFAULT 'HOLDER' CHECK ((user_role IN ('ADMIN', 'HOLDER', 'VIEWER')))
 )
 
 CREATE TABLE CREDIT_CARD

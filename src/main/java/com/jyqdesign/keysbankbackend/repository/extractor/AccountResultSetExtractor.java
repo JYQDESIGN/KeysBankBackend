@@ -85,6 +85,7 @@ public class AccountResultSetExtractor implements ResultSetExtractor<List<Accoun
 
                         CreditCard cc = new CreditCard();
                         cc.setIdCreditCard(creditCardId);
+                        cc.setIdProfile(profileId);
                         cc.setReference(rs.getLong("credit_card_reference"));
                         cc.setActive(rs.getBoolean("credit_card_active"));
 
@@ -108,6 +109,7 @@ public class AccountResultSetExtractor implements ResultSetExtractor<List<Accoun
 
                         CheckBook cb = new CheckBook();
                         cb.setIdCheckBook(checkBookId);
+                        cb.setIdProfile(profileId);
                         cb.setFirstCheckNumber(rs.getLong("check_book_first_check_number"));
                         cb.setRange(rs.getLong("check_book_range"));
                         cb.setActive(rs.getBoolean("check_book_active"));

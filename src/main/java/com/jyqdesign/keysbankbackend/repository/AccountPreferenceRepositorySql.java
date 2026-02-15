@@ -163,11 +163,7 @@ public class AccountPreferenceRepositorySql implements AccountPreferenceReposito
             catParams.addValue("type", category.getType());
 
             // récupérer l'id généré par SQL Server
-            Long generatedCategoryId = namedParameterJdbcTemplate.queryForObject(
-                    insertCategorySql,
-                    catParams,
-                    Long.class
-            );
+            Long generatedCategoryId = namedParameterJdbcTemplate.queryForObject(insertCategorySql,catParams,Long.class);
 
             // 2. INSERT SUBCATEGORIES (ignore id JSON et keys)
             if (category.getSubCategories() != null) {
@@ -182,6 +178,7 @@ public class AccountPreferenceRepositorySql implements AccountPreferenceReposito
                             op_sub_category_color,
                             op_sub_category_type
                         )
+                        OUTPUT INSERTED.id_op_sub_category
                         VALUES
                         (
                             :idCategory,
@@ -197,7 +194,32 @@ public class AccountPreferenceRepositorySql implements AccountPreferenceReposito
                     subParams.addValue("color", subCategory.getColor());
                     subParams.addValue("type", subCategory.getType());
 
-                    namedParameterJdbcTemplate.update(insertSubCategorySql, subParams);
+                    // récupérer l'id généré par SQL Server
+                    Long generatedSubCategoryId = namedParameterJdbcTemplate.queryForObject(insertSubCategorySql, subParams, Long.class);
+
+                    if (subCategory.getKeys() != null) {
+                        for (SubCategoryKey key : subCategory.getKeys()) {
+                            String insertKeySql = """
+                                    INSERT INTO SUB_CATEGORY_KEY
+                                    (
+                                        id_op_sub_category,
+                                        key_label
+                                    )
+                                    OUTPUT INSERTED.id_key
+                                    VALUES
+                                    (
+                                        :idSubCategorie,
+                                        :key
+                                    )
+                                    """;
+                            MapSqlParameterSource keyParams = new MapSqlParameterSource();
+                            keyParams.addValue("idSubCategorie", generatedSubCategoryId);
+                            keyParams.addValue("key", key.getKey());
+
+                            // récupérer l'id généré par SQL Server
+                            Long generatedKeyId = namedParameterJdbcTemplate.queryForObject(insertKeySql, keyParams, Long.class);
+                        }
+                    }
                 }
             }
         }
