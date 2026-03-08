@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/preference")
 @RequiredArgsConstructor
@@ -30,6 +32,19 @@ public class PreferenceController {
         return accountPreferenceService.updatePreferenceModeById(id, updatedMode);
     }
 
+    // KEY of mode
+
+    @PostMapping("/mode/key")
+    public ResponseEntity<ModeKey> createModeKey(@RequestBody ModeKey newKey) {
+        ModeKey result = accountPreferenceService.createModeKey(newKey);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @DeleteMapping("/mode/key/{id}")
+    public boolean deleteModeKeyById(@PathVariable long id) {
+        return accountPreferenceService.deleteModeKeyById(id);
+    }
+
     // TYPE
 
     @PutMapping("/type/{id}")
@@ -39,15 +54,21 @@ public class PreferenceController {
         return accountPreferenceService.updatePreferenceTypeById(id, updatedType);
     }
 
-    // KEY
+    // KEY of sub categories
 
-    @PostMapping("/key")
+    @PostMapping("/subcat/key")
     public ResponseEntity<SubCategoryKey> createPreferenceKey(@RequestBody SubCategoryKey newKey) {
         SubCategoryKey result = accountPreferenceService.createPreferenceKey(newKey);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @DeleteMapping("/key/{id}")
+    @PostMapping("/subcat/keys")
+    public ResponseEntity<Integer> createPreferenceKeys(@RequestBody List<SubCategoryKey> newKeys) {
+        int result = accountPreferenceService.createPreferenceKeys(newKeys);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @DeleteMapping("/subcat/key/{id}")
     public boolean deletePreferenceKeyById(@PathVariable long id) {
         return accountPreferenceService.deletePreferenceKeyById(id);
     }
@@ -73,6 +94,11 @@ public class PreferenceController {
     }
     
     // CATEGORY
+    @GetMapping("/categories/{id}")
+    public List<Category> readCategoryPreferencesById(@PathVariable long id) {
+        System.out.println("Get categories preferences by id: "+id);
+        return accountPreferenceService.readCategoryPreferencesById(id);
+    }
 
     @PostMapping("/cat")
     public ResponseEntity<Category> createPreferenceKey(@RequestBody Category newCategory) {

@@ -10,4 +10,18 @@ public class Account {
     private String name;
     private String bank;
     private String reference;
+    private int solde;
+    private String lastUpdate;
+    private int sinceYear;
+    private String csvImportFolder;
+    private int csvRowIgnored;
+    private int csvRowDate;
+    private int csvRowSolde;
+    private int csvColumnNumber;
+    private int csvColumnDate;
+    private String csvDateFormat;
+    private int csvColumnDescription;
+    private int csvColumnCredit;
+    private int csvColumnDebit;
+    private int csvColumnValue;
 }

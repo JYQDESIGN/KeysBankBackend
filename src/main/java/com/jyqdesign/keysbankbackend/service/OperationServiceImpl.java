@@ -1,0 +1,45 @@
+package com.jyqdesign.keysbankbackend.service;
+
+import com.jyqdesign.keysbankbackend.entity.Operation;
+import com.jyqdesign.keysbankbackend.repository.OperationRepository;
+import org.springframework.stereotype.Service;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.List;
+
+@Service
+public class OperationServiceImpl implements OperationService{
+
+    OperationRepository operationRepository;
+
+    public OperationServiceImpl(OperationRepository operationRepository) {
+        this.operationRepository = operationRepository;
+    }
+
+    @Override
+    public void createOperations(List<Operation> operations) {
+        operationRepository.createOperations(operations);
+    }
+
+    @Override
+    public List<Operation> readOperations(long idAccount, Timestamp start, Timestamp end) {
+        System.out.println("SERVICE readOperation of "+idAccount);
+        return operationRepository.readOperations(idAccount, start, end);
+    }
+
+    @Override
+    public Operation createOperation(Operation newOperation) {
+        return operationRepository.createOperation(newOperation);
+    }
+
+    @Override
+    public Operation updateOperationById(long id, Operation updatedOperation) {
+        return operationRepository.updateOperationById(id, updatedOperation);
+    }
+
+    @Override
+    public boolean deleteOperationById(long id) {
+        return operationRepository.deleteOperationById(id);
+    }
+}

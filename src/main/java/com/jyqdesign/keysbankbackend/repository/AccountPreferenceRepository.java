@@ -35,22 +35,29 @@ public interface AccountPreferenceRepository {
 
     void createDefaultCategories(long idAccount);
     List<Category> readPreferenceCategories(long idAccount);
-    SubCategoryKey createPreferenceKey(SubCategoryKey newKey);
-    boolean deletePreferenceKeyById(long id);
-
-    //============================================================================
-    // CRUD sub category
-    //============================================================================
-
     Category createPreferenceCategory(Category newCategory);
     Category updatePreferenceCategoryById(long id, Category updatedCategory);
     boolean deletePreferenceCategoryById(long id);
 
     //============================================================================
-    // CRUD key
+    // CRUD sub category
     //============================================================================
 
     SubCategory createPreferenceSubCategory(SubCategory newSubCategory);
     SubCategory updatePreferenceSubCategoryById(long id, SubCategory updatedSubCategory);
     boolean deletePreferenceSubCategoryById(long id);
+
+    //============================================================================
+    // CRUD key
+    //============================================================================
+
+    SubCategoryKey createPreferenceKey(SubCategoryKey newKey);
+    int createPreferenceKeys(List<SubCategoryKey> newKeys);
+    boolean deletePreferenceKeyById(long id);
+
+    ModeKey createModeKey(ModeKey newKey);
+    boolean deleteModeKeyById(long id);
+
+
+
 }

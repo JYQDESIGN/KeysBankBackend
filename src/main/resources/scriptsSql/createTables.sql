@@ -11,20 +11,29 @@ ALTER TABLE CREDIT_CARD
 ALTER TABLE CHECK_BOOK
     DROP CONSTRAINT fk_account_user_profile_book;
 
+ALTER TABLE OPERATION_CATEGORY
+    DROP CONSTRAINT fk_account_op_category;
+    
 ALTER TABLE OPERATION_SUB_CATEGORY
     DROP CONSTRAINT fk_sub_category_category;
 
 ALTER TABLE SUB_CATEGORY_KEY
     DROP CONSTRAINT fk_key_sub_category;
 
+ALTER TABLE MODE_KEY
+    DROP CONSTRAINT fk_key_mode;
+
 ALTER TABLE OPERATION
-    DROP CONSTRAINT fk_account_op, fk_account_op_type, fk_account_op_mode;
+    DROP CONSTRAINT fk_account_op;
 
 ALTER TABLE OPERATION_TYPE
     DROP CONSTRAINT fk_account_op_type;
 
 ALTER TABLE [OPERATION_MODE]
     DROP CONSTRAINT fk_account_op_mode;
+
+ALTER TABLE BALANCE_SHEET
+    DROP CONSTRAINT fk_account_balance_sheet;
 
 DROP TABLE IF EXISTS [USER];
 DROP TABLE IF EXISTS ACCOUNT;
@@ -34,10 +43,12 @@ DROP TABLE IF EXISTS CHECK_BOOK;
 DROP TABLE IF EXISTS OPERATION_TYPE;
 DROP TABLE IF EXISTS [OPERATION_MODE];
 DROP TABLE IF EXISTS OPERATION_STATUS;
-DROP TABLE IF EXISTS OPERATION ;
+DROP TABLE IF EXISTS OPERATION;
 DROP TABLE IF EXISTS OPERATION_CATEGORY;
 DROP TABLE IF EXISTS OPERATION_SUB_CATEGORY;
 DROP TABLE IF EXISTS SUB_CATEGORY_KEY;
+DROP TABLE IF EXISTS MODE_KEY;
+DROP TABLE IF EXISTS BALANCE_SHEET;
 ---------------------------------------------------------------------------
 -- CREATION DES TABLES
 ---------------------------------------------------------------------------
@@ -59,6 +70,28 @@ CREATE TABLE ACCOUNT
     name                    VARCHAR(30)     NOT NULL,
     bank                    VARCHAR(30)     NOT NULL,
     reference               VARCHAR(30)     NOT NULL,
+    solde                   BIGINT          NOT NULL,
+    last_update             DATETIME2       NOT NULL,
+    since_year              BIGINT,
+    csv_import_folder       VARCHAR(256),
+    csv_row_ignored         BIGINT,
+    csv_row_date            BIGINT,
+    csv_row_solde           BIGINT,
+    csv_column_number       BIGINT,
+    csv_column_date         BIGINT,
+    csv_date_format         VARCHAR(128),
+    csv_column_description  BIGINT,
+    csv_column_credit       BIGINT,
+    csv_column_debit        BIGINT,
+    csv_column_value        BIGINT
+)
+
+CREATE TABLE BALANCE_SHEET
+(
+    id_balance_sheet        BIGINT NOT NULL PRIMARY KEY IDENTITY (1,1),
+    id_account              BIGINT NOT NULL,
+    [year]                  BIGINT,
+    starting_balance        BIGINT
 )
 
 CREATE TABLE ACCOUNT_USER_PROFILE
@@ -106,6 +139,13 @@ CREATE TABLE [OPERATION_MODE]
     op_mode_icon            VARCHAR(32)
 )
 
+CREATE TABLE MODE_KEY
+(
+    id_key                  BIGINT          NOT NULL PRIMARY KEY IDENTITY (1,1),
+    id_op_mode              BIGINT,
+    key_label               VARCHAR(32) 
+)
+
 CREATE TABLE OPERATION_CATEGORY
 (
     id_op_category          BIGINT          NOT NULL PRIMARY KEY IDENTITY (1,1),
@@ -141,14 +181,13 @@ CREATE TABLE OPERATION_STATUS
 CREATE TABLE OPERATION
 (
     id_op                   BIGINT          NOT NULL PRIMARY KEY IDENTITY (1,1),
-    id_account              BIGINT,
-    category                VARCHAR(32),
-    sub_category            VARCHAR(32),
-    mode                    VARCHAR(16)     DEFAULT 'NONE' CHECK ((mode IN ('NONE', 'CREDIT_CARD', 'DIRECT_DEBIT', 'BANK_CHECK_IN', 'BANK_CHECK_OUT', 'BANK_TRANSFER_IN', 'BANK_TRANSFER_OUT', 'DEFERRED_OUT'))),
-    [type]                  VARCHAR(16)     DEFAULT 'NONE' CHECK ((type IN ('NONE', 'SAVING', 'SURVIVAL', 'CULTURAL', 'OPTIONAL', 'EXTRA','INCOME'))),
+    id_account              BIGINT          NOT NULL,
+    category                VARCHAR(32)     NOT NULL,
+    sub_category            VARCHAR(32)     NOT NULL,
+    mode                    VARCHAR(20)     DEFAULT 'NONE' CHECK ((mode IN ('NONE', 'CREDIT_CARD', 'DIRECT_DEBIT', 'BANK_CHECK_IN', 'BANK_CHECK_OUT', 'BANK_TRANSFER_IN', 'BANK_TRANSFER_OUT', 'DEFERRED_OUT'))),
+    [type]                  VARCHAR(16)     DEFAULT 'NONE' CHECK ((type IN ('NONE', 'SAVING', 'SURVIVAL', 'CULTURAL', 'OPTIONAL', 'EXTRA', 'INCOME'))),
     [status]                VARCHAR(16)     DEFAULT 'ALL' CHECK (([status] IN ('ALL', 'POINTED', 'TO_BE_CHECKED', 'SUSPICIOUS'))),
-    original_label          VARCHAR(256)    NOT NULL,
-    [description]           VARCHAR(256),
+    [description]           VARCHAR(256)   NOT NULL,
     comment                 VARCHAR(256),
     [date]                  DATETIME2       NOT NULL,
     [value]                 BIGINT          NOT NULL
@@ -196,9 +235,11 @@ ON DELETE CASCADE
 
 
 ALTER TABLE OPERATION
-    ADD CONSTRAINT fk_account_op FOREIGN KEY (id_account) REFERENCES [ACCOUNT] (id_account)
-        ON DELETE SET NULL
-        ON UPDATE CASCADE
+ADD CONSTRAINT fk_account_op 
+FOREIGN KEY (id_account) 
+REFERENCES [ACCOUNT] (id_account)
+ON DELETE CASCADE
+       
 
 ALTER TABLE OPERATION_SUB_CATEGORY
 ADD CONSTRAINT fk_sub_category_category
@@ -212,4 +253,17 @@ ADD CONSTRAINT fk_key_sub_category
 FOREIGN KEY (id_op_sub_category)
 REFERENCES OPERATION_SUB_CATEGORY(id_op_sub_category)
 ON DELETE CASCADE;
-        
+
+ALTER TABLE MODE_KEY
+ADD CONSTRAINT fk_key_mode
+FOREIGN KEY (id_op_mode)
+REFERENCES [OPERATION_MODE](id_op_mode)
+ON DELETE CASCADE;
+    
+ALTER TABLE BALANCE_SHEET
+ADD CONSTRAINT fk_account_balance_sheet 
+FOREIGN KEY (id_account) 
+REFERENCES [ACCOUNT] (id_account)
+ON DELETE CASCADE    
+
+

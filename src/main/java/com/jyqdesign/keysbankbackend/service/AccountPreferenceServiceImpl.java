@@ -58,6 +58,11 @@ public class AccountPreferenceServiceImpl implements AccountPreferenceService {
 
     //CATEGORY
     @Override
+    public List<Category> readCategoryPreferencesById(long accountId) {
+        return this.accountPreferenceRepository.readPreferenceCategories(accountId);
+    }
+
+    @Override
     public void createDefaultCategories(long idAccount) {
         this.accountPreferenceRepository.createDefaultCategories(idAccount);
     }
@@ -82,6 +87,8 @@ public class AccountPreferenceServiceImpl implements AccountPreferenceService {
         return this.accountPreferenceRepository.deletePreferenceCategoryById(id);
     }
 
+
+
     //SUB CATEGORY
     @Override
     public SubCategory createPreferenceSubCategory(SubCategory newSubCategory) {
@@ -98,14 +105,30 @@ public class AccountPreferenceServiceImpl implements AccountPreferenceService {
         return this.accountPreferenceRepository.deletePreferenceSubCategoryById(id);
     }
 
-    //KEY
+    //KEY of sub category
     @Override
     public SubCategoryKey createPreferenceKey(SubCategoryKey newKey) {
         return this.accountPreferenceRepository.createPreferenceKey(newKey);
     }
 
     @Override
+    public int createPreferenceKeys(List<SubCategoryKey> newKeys) {
+        return this.accountPreferenceRepository.createPreferenceKeys(newKeys);
+    }
+
+    @Override
     public boolean deletePreferenceKeyById(long id) {
         return this.accountPreferenceRepository.deletePreferenceKeyById(id);
+    }
+
+    //KEY of mode
+    @Override
+    public ModeKey createModeKey(ModeKey newKey) {
+        return this.accountPreferenceRepository.createModeKey(newKey);
+    }
+
+    @Override
+    public boolean deleteModeKeyById(long id) {
+        return this.accountPreferenceRepository.deleteModeKeyById(id);
     }
 }

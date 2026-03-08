@@ -12,18 +12,20 @@ public interface AccountPreferenceService {
     //CRUD type
     void createDefaultTypes(long idAccount);
     List<OperationType> readPreferenceTypes(long idAccount);
+    OperationType updatePreferenceTypeById(long id, OperationType updatedType);
 
     //CRUD mode
     void createDefaultModes(long idAccount);
     List<OperationMode> readPreferenceModes(long idAccount);
     OperationMode updatePreferenceModeById(long id, OperationMode updatedMode);
 
-    //CRUD key
+    //CRUD key of sub category
     SubCategoryKey createPreferenceKey(SubCategoryKey newKey);
-    OperationType updatePreferenceTypeById(long id, OperationType updatedType);
+    int createPreferenceKeys(List<SubCategoryKey> newKeys);
     boolean deletePreferenceKeyById(long id);
 
     //CRUD sub category
+    List<Category> readCategoryPreferencesById(long accountId);
     SubCategory createPreferenceSubCategory(SubCategory newSubCategory);
     SubCategory updatePreferenceSubCategoryById(long id, SubCategory updatedSubCategory);
     boolean deletePreferenceSubCategoryById(long id);
@@ -34,4 +36,10 @@ public interface AccountPreferenceService {
     Category createPreferenceCategory(Category newCategory);
     Category updatePreferenceCategoryById(long id, Category updatedCategory);
     boolean deletePreferenceCategoryById(long id);
+
+    //CRUD key of mode
+    ModeKey createModeKey(ModeKey newKey);
+    boolean deleteModeKeyById(long id);
+
+
 }

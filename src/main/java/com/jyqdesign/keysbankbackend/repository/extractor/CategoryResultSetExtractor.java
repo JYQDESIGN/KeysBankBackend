@@ -72,13 +72,12 @@ public class CategoryResultSetExtractor implements ResultSetExtractor<List<Categ
 
             String keyLabel = rs.getString("kLabel");
             long keyId = rs.getLong("idKey");
-            System.out.println("KEY: "+keyLabel+' '+keyId);
+
             if (keyLabel != null && subCategory != null) {
 
                 subCategory.getKeys().add(new SubCategoryKey(keyId, keyLabel));
             }
         }
-        System.out.println("PREFERENCES: "+categoryMap.values());
         return new ArrayList<>(categoryMap.values());
     }
 }

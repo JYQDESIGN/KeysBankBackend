@@ -1,11 +1,16 @@
 package com.jyqdesign.keysbankbackend;
 
+import com.jyqdesign.keysbankbackend.entity.OpConverter;
+import com.jyqdesign.keysbankbackend.entity.Operation;
 import com.jyqdesign.keysbankbackend.service.AccountPreferenceService;
 import com.jyqdesign.keysbankbackend.service.AccountService;
+import com.jyqdesign.keysbankbackend.service.OperationService;
 import com.jyqdesign.keysbankbackend.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 @SpringBootTest
 class KeysBankBackendApplicationTests {
@@ -18,6 +23,9 @@ class KeysBankBackendApplicationTests {
 
     @Autowired
     AccountPreferenceService accountPreferenceService;
+
+    @Autowired
+    OperationService operationService;
 
     @Test
     void contextLoads() {
@@ -67,4 +75,19 @@ class KeysBankBackendApplicationTests {
         System.out.println("READ PROFILE CATEGORIES: "+ accountPreferenceService.readPreferenceCategories(1));
     }
 
+    @Test
+    void opConvertion(String fileName) {
+        List<Operation> ops = OpConverter.convert(1, fileName);
+        operationService.createOperations(ops);
+
+    }
+
+    @Test
+    void initDb() {
+        this.createDefaultOperationType();
+        this.createDefaultOperationMode();
+        this.createDefaultCategories();
+        this.opConvertion("ope2.json");
+        this.opConvertion("ope2024.json");
+    }
 }

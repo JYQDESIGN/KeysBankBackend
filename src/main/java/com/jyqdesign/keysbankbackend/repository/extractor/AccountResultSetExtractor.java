@@ -4,7 +4,6 @@ import com.jyqdesign.keysbankbackend.entity.*;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.*;
 
 public class AccountResultSetExtractor implements ResultSetExtractor<List<Account>> {
@@ -28,6 +27,20 @@ public class AccountResultSetExtractor implements ResultSetExtractor<List<Accoun
                 account.setName(rs.getString("account_name"));
                 account.setBank(rs.getString("account_bank"));
                 account.setReference(rs.getString("account_reference"));
+                account.setSolde(rs.getInt("account_solde"));
+                account.setLastUpdate(rs.getString("account_last_update"));
+                account.setSinceYear(rs.getInt("account_since_year"));
+                account.setCsvImportFolder(rs.getString("csv_import_folder"));
+                account.setCsvRowIgnored(rs.getInt("csv_row_ignored"));
+                account.setCsvRowDate(rs.getInt("csv_row_date"));
+                account.setCsvRowSolde(rs.getInt("csv_row_solde"));
+                account.setCsvColumnNumber(rs.getInt("csv_column_number"));
+                account.setCsvColumnDate(rs.getInt("csv_column_date"));
+                account.setCsvDateFormat(rs.getString("csv_date_format"));
+                account.setCsvColumnDescription(rs.getInt("csv_column_description"));
+                account.setCsvColumnCredit(rs.getInt("csv_column_credit"));
+                account.setCsvColumnDebit(rs.getInt("csv_column_debit"));
+                account.setCsvColumnValue(rs.getInt("csv_column_value"));
 
                 accountMap.put(accountId, account);
             }
