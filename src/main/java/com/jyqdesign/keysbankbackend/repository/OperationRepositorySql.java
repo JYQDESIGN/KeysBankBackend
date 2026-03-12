@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -64,12 +65,13 @@ public class OperationRepositorySql implements OperationRepository {
                     ps.setLong(1, operation.getIdAccount());
                     ps.setString(2, operation.getCategory());
                     ps.setString(3, operation.getSubCategory());
-                    ps.setString(4, operation.getMode());
-                    ps.setString(5, operation.getType());
-                    ps.setString(6, operation.getStatus());
+                    ps.setString(4, operation.getMode().name());   // Mode enum → String
+                    ps.setString(5, operation.getType().name());
+                    ps.setString(6, operation.getStatus().name());
                     ps.setString(7, operation.getDescription());
                     ps.setString(8, operation.getComment());
-                    ps.setTimestamp(9, convertToTimestamp(operation.getDate()));
+                    LocalDateTime date = LocalDateTime.parse(operation.getDate());
+                    ps.setTimestamp(9, Timestamp.valueOf(date));
                     ps.setLong(10, operation.getValue());
                 }
         );
@@ -111,12 +113,13 @@ public class OperationRepositorySql implements OperationRepository {
                     ps.setLong(1, operation.getIdAccount());
                     ps.setString(2, operation.getCategory());
                     ps.setString(3, operation.getSubCategory());
-                    ps.setString(4, operation.getMode());
-                    ps.setString(5, operation.getType());
-                    ps.setString(6, operation.getStatus());
+                    ps.setString(4, operation.getMode().name());   // Mode enum → String
+                    ps.setString(5, operation.getType().name());
+                    ps.setString(6, operation.getStatus().name());
                     ps.setString(7, operation.getDescription());
                     ps.setString(8, operation.getComment());
-                    ps.setTimestamp(9, convertToTimestamp(operation.getDate()));
+                    LocalDateTime date = LocalDateTime.parse(operation.getDate());
+                    ps.setTimestamp(9, Timestamp.valueOf(date));
                     ps.setLong(10, operation.getValue());
 
                     // IMPORTANT : id pour le WHERE
@@ -176,8 +179,8 @@ public class OperationRepositorySql implements OperationRepository {
         params.put("status", operation.getStatus());
         params.put("description", operation.getDescription());
         params.put("comment", operation.getComment());
-        //params.put("date", convertToTimestamp(operation.getDate()));
-        params.put("date", operation.getDate());
+        LocalDateTime date = LocalDateTime.parse(operation.getDate());
+        params.put("date", date);
         params.put("value", operation.getValue());
 
         Long generatedId = namedParameterJdbcTemplate.queryForObject(
@@ -243,8 +246,8 @@ public class OperationRepositorySql implements OperationRepository {
         params.put("status", updatedOperation.getStatus());
         params.put("description", updatedOperation.getDescription());
         params.put("comment", updatedOperation.getComment());
-        //params.put("date", convertToTimestamp(updatedOperation.getDate()));
-        params.put("date", updatedOperation.getDate());
+        LocalDateTime date = LocalDateTime.parse(updatedOperation.getDate());
+        params.put("date", date);
         params.put("value", updatedOperation.getValue());
 
         Long updatedId = namedParameterJdbcTemplate.queryForObject(

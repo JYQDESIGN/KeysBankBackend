@@ -101,7 +101,7 @@ public class PreferenceController {
     }
 
     @PostMapping("/cat")
-    public ResponseEntity<Category> createPreferenceKey(@RequestBody Category newCategory) {
+    public ResponseEntity<Category> createPreferenceCategory(@RequestBody Category newCategory) {
         Category result = accountPreferenceService.createPreferenceCategory(newCategory);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }

@@ -174,7 +174,7 @@ CREATE TABLE SUB_CATEGORY_KEY
 CREATE TABLE OPERATION_STATUS
 (
     id_op_status            BIGINT          NOT NULL PRIMARY KEY IDENTITY (1,1),
-    op_status_value         VARCHAR(16)     DEFAULT 'ALL' CHECK ((op_status_value IN ('ALL', 'POINTED', 'TO_BE_CHECKED', 'SUSPICIOUS'))),
+    op_status_value         VARCHAR(16)     DEFAULT 'NONE' CHECK ((op_status_value IN ('NONE', 'POINTED', 'TO_BE_CHECKED', 'SUSPICIOUS'))),
     op_status_color         VARCHAR(16)
 )
 
@@ -186,8 +186,8 @@ CREATE TABLE OPERATION
     sub_category            VARCHAR(32)     NOT NULL,
     mode                    VARCHAR(20)     DEFAULT 'NONE' CHECK ((mode IN ('NONE', 'CREDIT_CARD', 'DIRECT_DEBIT', 'BANK_CHECK_IN', 'BANK_CHECK_OUT', 'BANK_TRANSFER_IN', 'BANK_TRANSFER_OUT', 'DEFERRED_OUT'))),
     [type]                  VARCHAR(16)     DEFAULT 'NONE' CHECK ((type IN ('NONE', 'SAVING', 'SURVIVAL', 'CULTURAL', 'OPTIONAL', 'EXTRA', 'INCOME'))),
-    [status]                VARCHAR(16)     DEFAULT 'ALL' CHECK (([status] IN ('ALL', 'POINTED', 'TO_BE_CHECKED', 'SUSPICIOUS'))),
-    [description]           VARCHAR(256)   NOT NULL,
+    [status]                VARCHAR(16)     DEFAULT 'NONE' CHECK (([status] IN ('NONE', 'POINTED', 'TO_BE_CHECKED', 'SUSPICIOUS'))),
+    [description]           VARCHAR(256)    NOT NULL,
     comment                 VARCHAR(256),
     [date]                  DATETIME2       NOT NULL,
     [value]                 BIGINT          NOT NULL

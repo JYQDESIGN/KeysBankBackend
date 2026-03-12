@@ -2,9 +2,9 @@ package com.jyqdesign.keysbankbackend.service;
 
 import com.jyqdesign.keysbankbackend.entity.Operation;
 import com.jyqdesign.keysbankbackend.repository.OperationRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -15,11 +15,6 @@ public class OperationServiceImpl implements OperationService{
 
     public OperationServiceImpl(OperationRepository operationRepository) {
         this.operationRepository = operationRepository;
-    }
-
-    @Override
-    public void createOperations(List<Operation> operations) {
-        operationRepository.createOperations(operations);
     }
 
     @Override
@@ -34,8 +29,18 @@ public class OperationServiceImpl implements OperationService{
     }
 
     @Override
+    public int createOperations(List<Operation> newOperations) {
+        return operationRepository.createOperations(newOperations);
+    }
+
+    @Override
     public Operation updateOperationById(long id, Operation updatedOperation) {
         return operationRepository.updateOperationById(id, updatedOperation);
+    }
+
+    @Override
+    public int updateOperations(List<Operation> updatedOperations) {
+        return operationRepository.updateOperations(updatedOperations);
     }
 
     @Override

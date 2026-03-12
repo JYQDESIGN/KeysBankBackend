@@ -1,6 +1,9 @@
 package com.jyqdesign.keysbankbackend.repository.rowMapper;
 
 import com.jyqdesign.keysbankbackend.entity.Operation;
+import com.jyqdesign.keysbankbackend.entity.enums.OpMode;
+import com.jyqdesign.keysbankbackend.entity.enums.OpStatus;
+import com.jyqdesign.keysbankbackend.entity.enums.OpType;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -15,9 +18,9 @@ public class OperationRowMapper implements RowMapper<Operation> {
         op.setIdAccount(rs.getLong("id_account"));
         op.setCategory(rs.getString("category"));
         op.setSubCategory(rs.getString("sub_category"));
-        op.setMode(rs.getString("mode"));
-        op.setType(rs.getString("type"));
-        op.setStatus(rs.getString("status"));
+        op.setMode(OpMode.valueOf(rs.getString("mode").trim().toUpperCase()));
+        op.setType(OpType.valueOf(rs.getString("type").trim().toUpperCase()));
+        op.setStatus(OpStatus.valueOf(rs.getString("status").trim().toUpperCase()));
         op.setDescription(rs.getString("description"));
         op.setComment(rs.getString("comment"));
         // convertir DATETIME2 → String

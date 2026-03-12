@@ -2,6 +2,7 @@ package com.jyqdesign.keysbankbackend.controller;
 
 import com.jyqdesign.keysbankbackend.entity.Operation;
 import com.jyqdesign.keysbankbackend.entity.SubCategory;
+import com.jyqdesign.keysbankbackend.entity.SubCategoryKey;
 import com.jyqdesign.keysbankbackend.service.OperationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/operation")
+@RequestMapping("/api/operations")
 @RequiredArgsConstructor
 public class OperationController {
 
@@ -35,21 +36,34 @@ public class OperationController {
         return Timestamp.valueOf(localDateTime);
     }
 
-    @PostMapping("")
+    @PostMapping("/one")
     public ResponseEntity<Operation> createOperation(
             @RequestBody Operation newOperation) {
         Operation result = operationService.createOperation(newOperation);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("")
+    public ResponseEntity<Integer> createOperations(
+            @RequestBody List<Operation> newOperations) {
+        int result = operationService.createOperations(newOperations);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @PutMapping("/one/{id}")
     public Operation updateOperationById(
             @PathVariable long id,
             @RequestBody Operation updatedOperation) {
         return operationService.updateOperationById(id, updatedOperation);
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("")
+    public int updateOperations(
+            @RequestBody List<Operation> updatedOperations) {
+        return operationService.updateOperations(updatedOperations);
+    }
+
+    @DeleteMapping("/one/{id}")
     public boolean deleteOperationById(
             @PathVariable long id) {
         return operationService.deleteOperationById(id);

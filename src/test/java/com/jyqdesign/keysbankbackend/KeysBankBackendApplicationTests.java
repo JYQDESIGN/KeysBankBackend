@@ -87,7 +87,7 @@ class KeysBankBackendApplicationTests {
         this.createDefaultOperationType();
         this.createDefaultOperationMode();
         this.createDefaultCategories();
-        this.opConvertion("ope2.json");
+        this.opConvertion("ope2026-2025.json");
         this.opConvertion("ope2024.json");
     }
 }
