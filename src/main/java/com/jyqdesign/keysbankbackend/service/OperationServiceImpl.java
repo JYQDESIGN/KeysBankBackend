@@ -19,7 +19,6 @@ public class OperationServiceImpl implements OperationService{
 
     @Override
     public List<Operation> readOperations(long idAccount, Timestamp start, Timestamp end) {
-        System.out.println("SERVICE readOperation of "+idAccount);
         return operationRepository.readOperations(idAccount, start, end);
     }
 

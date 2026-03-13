@@ -70,7 +70,7 @@ INSERT INTO [BALANCE_SHEET] (id_account, [year], starting_balance)
 VALUES (1, 2025, 100000);
 
 INSERT INTO [BALANCE_SHEET] (id_account, [year], starting_balance)
-VALUES (1, 2026, 100000);
+VALUES (1, 2026, 229858);
 
 -- --------------------------------------------------------------------------
 -- -- INSERTION DES PROFILE DE COMPTES

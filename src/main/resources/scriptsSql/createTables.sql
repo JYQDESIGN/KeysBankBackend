@@ -91,7 +91,16 @@ CREATE TABLE BALANCE_SHEET
     id_balance_sheet        BIGINT NOT NULL PRIMARY KEY IDENTITY (1,1),
     id_account              BIGINT NOT NULL,
     [year]                  BIGINT,
-    starting_balance        BIGINT
+    starting_balance        BIGINT,
+    cumul_credit            BIGINT,
+    cumul_debit             BIGINT,
+    cumul_none              BIGINT,
+    cumul_saving            BIGINT,
+    cumul_survival          BIGINT,
+    cumul_cultural          BIGINT,
+    cumul_optional          BIGINT,
+    cumul_extra             BIGINT,
+    cumul_income            BIGINT
 )
 
 CREATE TABLE ACCOUNT_USER_PROFILE
