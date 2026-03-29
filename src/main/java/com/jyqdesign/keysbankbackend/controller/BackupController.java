@@ -1,55 +1,56 @@
 package com.jyqdesign.keysbankbackend.controller;
 
+import com.jyqdesign.keysbankbackend.entity.dto.BackupOperationDTO;
+import com.jyqdesign.keysbankbackend.entity.dto.BackupPreferenceDTO;
 import com.jyqdesign.keysbankbackend.service.BackupService;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.databind.ObjectMapper;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequestMapping("/api/backup")
 public class BackupController {
 
-    private final BackupService backupService;
+    private final BackupService service;
 
-    public BackupController(BackupService backupService) {
-        this.backupService = backupService;
+    public BackupController(BackupService service) {
+        this.service = service;
     }
 
-    @GetMapping("/download")
-    public ResponseEntity<InputStreamResource> downloadBackup() throws FileNotFoundException {
-        System.out.println("BackupController::downloadBackup");
-        File file = backupService.generateBackup("db_keys_bank");
+    @GetMapping("/preferences/{accountId}")
+    public ResponseEntity<byte[]> export(@PathVariable Long accountId) throws Exception {
 
-        InputStreamResource resource =
-                new InputStreamResource(new FileInputStream(file));
+        BackupPreferenceDTO dto = service.exportPreferences(accountId);
+        byte[] json = new ObjectMapper().writeValueAsBytes(dto);
+
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss"));
+        String filename = "backup_preferences_"+ dto.getAccount().getName() +"_"+ timestamp + ".json";
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=" + file.getName())
-                .contentLength(file.length())
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(resource);
+                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + filename + "\"")
+                .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION) // ⚡ très important
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(json);
     }
 
-    @PostMapping("/restore")
-    public ResponseEntity<String> restoreBackup(@RequestParam("file") MultipartFile file) throws IOException {
+    @GetMapping("/operations/{accountId}")
+    public ResponseEntity<byte[]> export(@PathVariable Long accountId, @RequestParam long year) throws Exception {
 
-        String path = "C:/backups/" + file.getOriginalFilename();
+        BackupOperationDTO dto = service.exportOperations(accountId, year);
+        byte[] json = new ObjectMapper().writeValueAsBytes(dto);
 
-        File backupFile = new File(path);
-        file.transferTo(backupFile);
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss"));
+        String filename = "backup_operations_" + dto.getAccountId() + "_" + dto.getYear() + "_" + timestamp + ".json";
 
-        backupService.restoreBackup("db_keys_bank", backupFile);
-
-        return ResponseEntity.ok("Database restored successfully");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + filename + "\"")
+                .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION) // ⚡ très important
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(json);
     }
 }

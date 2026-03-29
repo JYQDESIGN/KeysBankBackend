@@ -117,4 +117,5 @@ public class PreferenceController {
     public boolean deletePreferenceCategoryById(@PathVariable long id) {
         return accountPreferenceService.deletePreferenceCategoryById(id);
     }
+
 }
