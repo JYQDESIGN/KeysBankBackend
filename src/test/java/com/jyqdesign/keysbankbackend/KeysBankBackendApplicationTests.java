@@ -87,7 +87,13 @@ class KeysBankBackendApplicationTests {
         this.createDefaultOperationType();
         this.createDefaultOperationMode();
         this.createDefaultCategories();
-        this.opConvertion("ope2026-2025.json");
-        this.opConvertion("ope2024.json");
+        //opérations
+        for(int y=2007 ; y<2027 ; y++) {
+            if (y!=2020 && y!=2021 && y!=2023) {
+                String fileLabel = y+".json";
+                this.opConvertion(fileLabel);
+            }
+        }
     }
+
 }

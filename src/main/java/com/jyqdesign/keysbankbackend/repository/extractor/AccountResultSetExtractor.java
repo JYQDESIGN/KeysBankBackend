@@ -27,7 +27,8 @@ public class AccountResultSetExtractor implements ResultSetExtractor<List<Accoun
                 account.setName(rs.getString("account_name"));
                 account.setBank(rs.getString("account_bank"));
                 account.setReference(rs.getString("account_reference"));
-                account.setSolde(rs.getInt("account_solde"));
+                account.setCurrentSolde(rs.getInt("account_current_solde"));
+                account.setInitialBalance(rs.getInt("account_initial_balance"));
                 account.setLastUpdate(rs.getString("account_last_update"));
                 account.setSinceYear(rs.getInt("account_since_year"));
                 account.setCsvImportFolder(rs.getString("csv_import_folder"));

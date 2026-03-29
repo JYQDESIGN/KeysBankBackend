@@ -18,12 +18,30 @@ public class BalanceServiceImpl implements BalanceService{
 
     @Override
     public Balance readBalance(long idAccount, long year) {
-        return balanceRepository.readBalance(idAccount, year);
+        Balance readBalance = balanceRepository.readBalance(idAccount, year);
+        if (readBalance != null) {
+            //balance exists
+            return readBalance;
+        } else {
+            //create new balance
+            return balanceRepository.createBalance(idAccount, year);
+        }
     }
 
     @Override
     public Balance updateBalanceById(long idBalanceSheet, Balance updatedBalance) {
-        return balanceRepository.updateBalanceById(idBalanceSheet, updatedBalance);
+        // update balance y
+        Balance currentBalanceUpdated =  balanceRepository.updateBalanceById(idBalanceSheet, updatedBalance);
+        if (currentBalanceUpdated != null) {
+            // update balance y+1 : y+1 startingBalance = y endingSolde
+            // get y+1 balance
+            Balance nextBalance = this.readBalance(currentBalanceUpdated.getIdAccount(), currentBalanceUpdated.getYear() + 1);
+            nextBalance.setStartingBalance(currentBalanceUpdated.getEndingSolde());
+            // update balance y+1
+            Balance nextBalanceUpdated = balanceRepository.updateBalanceById(nextBalance.getIdBalanceSheet(), nextBalance);
+            return nextBalanceUpdated != null ? currentBalanceUpdated : null;
+        }
+        return null;
     }
 
     @Override

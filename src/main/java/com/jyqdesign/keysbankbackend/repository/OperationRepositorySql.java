@@ -277,4 +277,16 @@ public class OperationRepositorySql implements OperationRepository {
         return rowsAffected == 1;
     }
 
+
+    @Override
+    public int deleteOperationsById(List<Integer> ids) {
+        String sql = """
+                    DELETE FROM OPERATION
+                    WHERE id IN (:ids)
+                """;
+
+        Map<String, Object> params = Map.of("ids", ids);
+
+        return namedParameterJdbcTemplate.update(sql, params);
+    }
 }

@@ -37,7 +37,7 @@ public class OperationMode {
 
         keys = new ArrayList<>();
         keys.add(new ModeKey("ACHAT CB"));
-        list.add(new OperationMode("Carte bleue", OpMode.CREDIT_CARD, "#2060DD", "bi-credit-card", keys));
+        list.add(new OperationMode("Carte bleue", OpMode.CREDIT_CARD, "#10AAFF", "bi-credit-card", keys));
 
         keys = new ArrayList<>();
         keys.add(new ModeKey("PRELEVEMENT DE"));

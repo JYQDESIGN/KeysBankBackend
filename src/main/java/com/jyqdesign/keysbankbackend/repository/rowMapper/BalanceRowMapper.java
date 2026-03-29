@@ -16,6 +16,8 @@ public class BalanceRowMapper implements RowMapper<Balance> {
         balance.setIdAccount(rs.getLong("id_account"));
         balance.setYear(rs.getLong("year"));
         balance.setStartingBalance(rs.getLong("starting_balance"));
+        balance.setEndingSolde(rs.getLong("ending_solde"));
+        balance.setOperationCount(rs.getLong("operation_count"));
 
         balance.setCumulCredit(rs.getLong("cumul_credit"));
         balance.setCumulDebit(rs.getLong("cumul_debit"));

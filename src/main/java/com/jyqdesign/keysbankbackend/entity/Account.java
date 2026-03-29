@@ -10,7 +10,8 @@ public class Account {
     private String name;
     private String bank;
     private String reference;
-    private int solde;
+    private int currentSolde;
+    private int initialBalance;
     private String lastUpdate;
     private int sinceYear;
     private String csvImportFolder;

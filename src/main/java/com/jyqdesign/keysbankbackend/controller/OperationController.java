@@ -68,4 +68,10 @@ public class OperationController {
             @PathVariable long id) {
         return operationService.deleteOperationById(id);
     }
+
+    @PostMapping("/delete")
+    public int deleteOperationsById(
+            @RequestBody List<Integer> ids) {
+        return operationService.deleteOperationsById(ids);
+    }
 }

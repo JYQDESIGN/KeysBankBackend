@@ -46,4 +46,9 @@ public class OperationServiceImpl implements OperationService{
     public boolean deleteOperationById(long id) {
         return operationRepository.deleteOperationById(id);
     }
+
+    @Override
+    public int deleteOperationsById(List<Integer> ids) {
+        return operationRepository.deleteOperationsById(ids);
+    }
 }

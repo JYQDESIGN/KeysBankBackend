@@ -30,8 +30,8 @@ public class OperationType {
         list.add(new OperationType("Epargne", OpType.SAVING, "#00DD00", "bi-piggy-bank"));
         list.add(new OperationType("Survie", OpType.SURVIVAL, "#FF0000", "bi-heart-pulse"));
         list.add(new OperationType("Culture", OpType.CULTURAL, "#00DDDD", "bi-journal-text"));
-        list.add(new OperationType("Facultatif", OpType.OPTIONAL, "#DD8000", "bi-cone-striped"));
-        list.add(new OperationType("Extra", OpType.EXTRA, "#FF00FF", "bi-gift"));
+        list.add(new OperationType("Facultatif", OpType.OPTIONAL, "#FF00FF", "bi-gift"));
+        list.add(new OperationType("Extra", OpType.EXTRA, "#FFFF30", "bi bi-radioactive"));
         list.add(new OperationType("Entrée", OpType.INCOME, "#40EE40", "bi-box-arrow-in-down"));
         return list;
     }

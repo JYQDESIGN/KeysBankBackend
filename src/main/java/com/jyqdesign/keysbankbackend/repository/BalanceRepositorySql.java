@@ -4,11 +4,13 @@ import com.jyqdesign.keysbankbackend.entity.Balance;
 import com.jyqdesign.keysbankbackend.repository.rowMapper.BalanceRowMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -30,6 +32,8 @@ public class BalanceRepositorySql implements BalanceRepository {
                        id_account,
                        [year],
                        starting_balance,
+                       ending_solde,
+                       operation_count,
                        cumul_credit,
                        cumul_debit,
                        cumul_none,
@@ -57,11 +61,63 @@ public class BalanceRepositorySql implements BalanceRepository {
     }
 
     @Override
+    public Balance createBalance(long idAccount, long year) {
+
+        String sql = """
+                INSERT INTO BALANCE_SHEET (
+                    id_account,
+                    [year],
+                    starting_balance,
+                    ending_solde,
+                    operation_count,
+                    cumul_credit,
+                    cumul_debit,
+                    cumul_none,
+                    cumul_saving,
+                    cumul_survival,
+                    cumul_cultural,
+                    cumul_optional,
+                    cumul_extra,
+                    cumul_income
+                )
+                VALUES (
+                    :idAccount,
+                    :year,
+                    0,0,0,0,0,0,0,0,0,0,0,0
+                )
+                """;
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("idAccount", idAccount)
+                .addValue("year", year);
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        namedParameterJdbcTemplate.update(
+                sql,
+                params,
+                keyHolder,
+                new String[]{"id_balance_sheet"}
+        );
+
+        Number key = keyHolder.getKey();
+
+        Balance balance = new Balance();
+        balance.setIdBalanceSheet(key.longValue());
+        balance.setIdAccount(idAccount);
+        balance.setYear(year);
+
+        return balance;
+    }
+
+    @Override
     public Balance updateBalanceById(long idBalanceSheet, Balance updatedBalance) {
 
         String sql = """
                 UPDATE BALANCE_SHEET
                 SET starting_balance = :startingBalance,
+                    ending_solde = :endingSolde,
+                    operation_count = :operationCount,
                     cumul_credit = :cumulCredit,
                     cumul_debit = :cumulDebit,
                     cumul_none = :cumulNone,
@@ -78,6 +134,8 @@ public class BalanceRepositorySql implements BalanceRepository {
         params.put("idAccount", updatedBalance.getIdAccount());
         params.put("idBalanceSheet", idBalanceSheet);
         params.put("startingBalance", updatedBalance.getStartingBalance());
+        params.put("endingSolde", updatedBalance.getEndingSolde());
+        params.put("operationCount", updatedBalance.getOperationCount());
         params.put("cumulCredit", updatedBalance.getCumulCredit());
         params.put("cumulDebit", updatedBalance.getCumulDebit());
         params.put("cumulNone", updatedBalance.getCumulNone());
@@ -101,19 +159,20 @@ public class BalanceRepositorySql implements BalanceRepository {
     public Balance readFullBalance(long idAccount) {
 
         String sql = """
-        SELECT
-            SUM(cumul_credit) AS cumul_credit,
-            SUM(cumul_debit) AS cumul_debit,
-            SUM(cumul_none) AS cumul_none,
-            SUM(cumul_saving) AS cumul_saving,
-            SUM(cumul_survival) AS cumul_survival,
-            SUM(cumul_cultural) AS cumul_cultural,
-            SUM(cumul_optional) AS cumul_optional,
-            SUM(cumul_extra) AS cumul_extra,
-            SUM(cumul_income) AS cumul_income
-        FROM BALANCE_SHEET
-        WHERE id_account = :idAccount
-        """;
+                SELECT
+                    SUM(cumul_credit) AS cumul_credit,
+                    SUM(cumul_debit) AS cumul_debit,
+                    SUM(cumul_none) AS cumul_none,
+                    SUM(cumul_saving) AS cumul_saving,
+                    SUM(cumul_survival) AS cumul_survival,
+                    SUM(cumul_cultural) AS cumul_cultural,
+                    SUM(cumul_optional) AS cumul_optional,
+                    SUM(cumul_extra) AS cumul_extra,
+                    SUM(cumul_income) AS cumul_income,
+                    SUM(operation_count) AS operation_count
+                FROM BALANCE_SHEET
+                WHERE id_account = :idAccount
+                """;
 
         Map<String, Object> params = Map.of("idAccount", idAccount);
 
@@ -122,9 +181,7 @@ public class BalanceRepositorySql implements BalanceRepository {
                 params,
                 (rs, rowNum) -> {
                     Balance balance = new Balance();
-
                     balance.setIdAccount(idAccount);
-
                     balance.setCumulCredit(rs.getLong("cumul_credit"));
                     balance.setCumulDebit(rs.getLong("cumul_debit"));
                     balance.setCumulNone(rs.getLong("cumul_none"));
@@ -134,6 +191,7 @@ public class BalanceRepositorySql implements BalanceRepository {
                     balance.setCumulOptional(rs.getLong("cumul_optional"));
                     balance.setCumulExtra(rs.getLong("cumul_extra"));
                     balance.setCumulIncome(rs.getLong("cumul_income"));
+                    balance.setOperationCount(rs.getLong("operation_count"));
 
                     return balance;
                 }

@@ -8,6 +8,8 @@ public class Balance {
     private long idAccount;
     private long year;
     private long startingBalance;
+    private long endingSolde;
+    private long operationCount;
 
     private long cumulCredit;
     private long cumulDebit;

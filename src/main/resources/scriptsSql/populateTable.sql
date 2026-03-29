@@ -17,9 +17,10 @@ INSERT INTO [ACCOUNT] (
     bank, 
     reference, 
     [name], 
-    solde, 
+    current_solde, 
     last_update, 
     since_year,
+    initial_balance,
     csv_import_folder,
     csv_row_ignored,
     csv_row_date,
@@ -35,9 +36,10 @@ VALUES (
     'Banque Postale', 
     '320121E', 
     'Compte joint', 
-    0, 
+    446772, 
     '',
-    2023,
+    2007,
+    451103,
     '',
     7,
     4,
@@ -50,27 +52,30 @@ VALUES (
     null,
     3);
 
-INSERT INTO [ACCOUNT] (bank, reference, name, solde, last_update)
-VALUES ('CMB', '123456789', 'Perso', 0, '');
+INSERT INTO [ACCOUNT] (bank, reference, name, current_solde, initial_balance, last_update)
+VALUES ('CMB', '123456789', 'Perso', 0, 0, '');
 
-INSERT INTO [ACCOUNT] (bank, reference, name, solde, last_update)
-VALUES ('PARIBAS', '11223344', 'MyAccount', 0, '');
+INSERT INTO [ACCOUNT] (bank, reference, name, current_solde, initial_balance, last_update)
+VALUES ('PARIBAS', '11223344', 'MyAccount', 0, 0, '');
 
 -- --------------------------------------------------------------------------
 -- -- INSERTION DES BALANCES ANNUELLES
 -- --------------------------------------------------------------------------
 
 INSERT INTO [BALANCE_SHEET] (id_account, [year], starting_balance)
-VALUES (1, 2023, 100000);
+VALUES (1, 2023, 0);
 
 INSERT INTO [BALANCE_SHEET] (id_account, [year], starting_balance)
-VALUES (1, 2024, 100000);
+VALUES (1, 2024, 0);
 
 INSERT INTO [BALANCE_SHEET] (id_account, [year], starting_balance)
-VALUES (1, 2025, 100000);
+VALUES (1, 2025, 0);
 
 INSERT INTO [BALANCE_SHEET] (id_account, [year], starting_balance)
-VALUES (1, 2026, 229858);
+VALUES (1, 2026, 333762);
+
+INSERT INTO [BALANCE_SHEET] (id_account, [year], starting_balance)
+VALUES (1, 2007, 451103);
 
 -- --------------------------------------------------------------------------
 -- -- INSERTION DES PROFILE DE COMPTES
