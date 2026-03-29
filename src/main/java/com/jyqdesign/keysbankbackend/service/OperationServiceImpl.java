@@ -48,7 +48,7 @@ public class OperationServiceImpl implements OperationService{
     }
 
     @Override
-    public int deleteOperationsById(List<Integer> ids) {
+    public int deleteOperationsById(List<Long> ids) {
         return operationRepository.deleteOperationsById(ids);
     }
 }

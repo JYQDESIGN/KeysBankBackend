@@ -13,5 +13,5 @@ public interface OperationService {
 
     int createOperations(List<Operation> newOperations);
     int updateOperations(List<Operation> updatedOperations);
-    int deleteOperationsById(List<Integer> ids);
+    int deleteOperationsById(List<Long> ids);
 }

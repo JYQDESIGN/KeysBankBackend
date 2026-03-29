@@ -71,7 +71,7 @@ public class OperationController {
 
     @PostMapping("/delete")
     public int deleteOperationsById(
-            @RequestBody List<Integer> ids) {
+            @RequestBody List<Long> ids) {
         return operationService.deleteOperationsById(ids);
     }
 }

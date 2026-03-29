@@ -267,7 +267,7 @@ public class OperationRepositorySql implements OperationRepository {
     public boolean deleteOperationById(long id) {
         String sql = """
                     DELETE FROM OPERATION
-                    WHERE id = :id
+                    WHERE id_op = :id
                 """;
 
         Map<String, Object> params = Map.of("id", id);
@@ -279,11 +279,11 @@ public class OperationRepositorySql implements OperationRepository {
 
 
     @Override
-    public int deleteOperationsById(List<Integer> ids) {
-        String sql = """
-                    DELETE FROM OPERATION
-                    WHERE id IN (:ids)
-                """;
+    public int deleteOperationsById(List<Long> ids) {
+        System.out.println("deleteOperationsById: "+ids);
+        if (ids == null || ids.isEmpty()) return 0;
+
+        String sql = "DELETE FROM OPERATION WHERE id_op IN (:ids)";
 
         Map<String, Object> params = Map.of("ids", ids);
 

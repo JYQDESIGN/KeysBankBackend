@@ -1,7 +1,9 @@
 package com.jyqdesign.keysbankbackend.controller;
 
+import com.jyqdesign.keysbankbackend.entity.Account;
 import com.jyqdesign.keysbankbackend.entity.dto.BackupOperationDTO;
 import com.jyqdesign.keysbankbackend.entity.dto.BackupPreferenceDTO;
+import com.jyqdesign.keysbankbackend.service.AccountService;
 import com.jyqdesign.keysbankbackend.service.BackupService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,9 +19,11 @@ import java.time.format.DateTimeFormatter;
 public class BackupController {
 
     private final BackupService service;
+    private final AccountService accountService;
 
-    public BackupController(BackupService service) {
+    public BackupController(BackupService service, AccountService accountService) {
         this.service = service;
+        this.accountService = accountService;
     }
 
     @GetMapping("/preferences/{accountId}")
@@ -28,8 +32,8 @@ public class BackupController {
         BackupPreferenceDTO dto = service.exportPreferences(accountId);
         byte[] json = new ObjectMapper().writeValueAsBytes(dto);
 
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss"));
-        String filename = "backup_preferences_"+ dto.getAccount().getName() +"_"+ timestamp + ".json";
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd__HH-mm-ss"));
+        String filename = "backup_preferences_"+ dto.getAccount().getName() +"__"+ timestamp + ".json";
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + filename + "\"")
@@ -41,11 +45,14 @@ public class BackupController {
     @GetMapping("/operations/{accountId}")
     public ResponseEntity<byte[]> export(@PathVariable Long accountId, @RequestParam long year) throws Exception {
 
+        //get account name
+        Account account = this.accountService.readById(accountId);
+
         BackupOperationDTO dto = service.exportOperations(accountId, year);
         byte[] json = new ObjectMapper().writeValueAsBytes(dto);
 
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss"));
-        String filename = "backup_operations_" + dto.getAccountId() + "_" + dto.getYear() + "_" + timestamp + ".json";
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd__HH-mm-ss"));
+        String filename = "backup_operations_" + account.getName() + "_" + dto.getYear() + "__" + timestamp + ".json";
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + filename + "\"")
