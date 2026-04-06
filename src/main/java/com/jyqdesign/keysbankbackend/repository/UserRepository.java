@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserRepository {
 
-    void createUser(User user);
+    User createUser(User user);
 
     List<User> readAll();
 
@@ -35,5 +35,6 @@ public interface UserRepository {
 
     // PROFILE
 
+    UserAccountProfile createProfile(UserAccountProfile profile);
     UserAccountProfile updateProfile(long id, UserAccountProfile profile);
 }

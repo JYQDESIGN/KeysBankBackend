@@ -1,5 +1,6 @@
 package com.jyqdesign.keysbankbackend;
 
+import com.jyqdesign.keysbankbackend.entity.Category;
 import com.jyqdesign.keysbankbackend.entity.OpConverter;
 import com.jyqdesign.keysbankbackend.entity.Operation;
 import com.jyqdesign.keysbankbackend.service.AccountPreferenceService;
@@ -47,6 +48,13 @@ class KeysBankBackendApplicationTests {
     }
 
     @Test
+    void deleteAccountById() {
+        long id = 7;
+        this.deletePreferenceByAccountId(id);
+        accountService.deleteAccount(id);
+    }
+
+    @Test
     void createDefaultOperationType() {
         accountPreferenceService.createDefaultTypes(1);
     }
@@ -67,8 +75,27 @@ class KeysBankBackendApplicationTests {
     }
 
     @Test
+    void cleanTypeAndMode() {
+        accountPreferenceService.cleanTypeAndMode();
+    }
+
+    @Test
+    void deletePreferenceByAccountId(long accountId) {
+        accountPreferenceService.deleteTypesByAccountId(accountId);
+        accountPreferenceService.deleteModesByAccountId(accountId);
+    }
+
+    @Test
     void createDefaultCategories() {
-        accountPreferenceService.createDefaultCategories(1);}
+        accountPreferenceService.createDefaultCategories(1);
+    }
+
+    @Test
+    void checkDefaultCategories() {
+        List<Category> categories = Category.getDefaultCategories();
+        System.out.println("Default categories: "+categories);
+    }
+
 
     @Test
     void readProfileCategories(){

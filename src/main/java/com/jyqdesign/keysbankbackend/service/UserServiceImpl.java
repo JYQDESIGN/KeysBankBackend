@@ -19,8 +19,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void createUser(User user) {
-
+    public User createUser(User user) {
+        return this.userRepository.createUser(user);
     }
 
     @Override
@@ -83,6 +83,11 @@ public class UserServiceImpl implements UserService{
     }
 
     // PROFILE
+
+    @Override
+    public UserAccountProfile createProfile(UserAccountProfile profile) {
+        return this.userRepository.createProfile(profile);
+    }
 
     @Override
     public UserAccountProfile updateProfile(long id, UserAccountProfile profile) {

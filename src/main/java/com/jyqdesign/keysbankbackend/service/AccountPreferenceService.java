@@ -42,4 +42,7 @@ public interface AccountPreferenceService {
     boolean deleteModeKeyById(long id);
 
 
+    void cleanTypeAndMode();
+    boolean deleteTypesByAccountId(long accountId);
+    boolean deleteModesByAccountId(long accountId);
 }

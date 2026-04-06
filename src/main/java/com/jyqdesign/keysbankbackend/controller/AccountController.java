@@ -1,13 +1,11 @@
 package com.jyqdesign.keysbankbackend.controller;
 
 import com.jyqdesign.keysbankbackend.entity.Account;
+import com.jyqdesign.keysbankbackend.entity.User;
 import com.jyqdesign.keysbankbackend.repository.dto.AccountPreferencesDTO;
 import com.jyqdesign.keysbankbackend.service.AccountService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +26,17 @@ public class AccountController {
         return accountService.readById(id);
     }
 
+    @PostMapping("")
+    public Account createAccount(@RequestBody Account newAccount) {
+        System.out.println("create account: "+newAccount);
+        //return null;
+        return accountService.createAccount(newAccount);
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean deleteAccountById(
+            @PathVariable long id) {
+        return accountService.deleteAccount(id);
+    }
 }
 

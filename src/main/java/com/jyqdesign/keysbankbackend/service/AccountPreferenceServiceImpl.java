@@ -131,4 +131,20 @@ public class AccountPreferenceServiceImpl implements AccountPreferenceService {
     public boolean deleteModeKeyById(long id) {
         return this.accountPreferenceRepository.deleteModeKeyById(id);
     }
+
+    @Override
+    public void cleanTypeAndMode() {
+        this.accountPreferenceRepository.cleanType();
+        this.accountPreferenceRepository.cleanMode();
+    }
+
+    @Override
+    public boolean deleteTypesByAccountId(long accountId) {
+        return this.accountPreferenceRepository.deleteTypesByAccountId(accountId);
+    }
+
+    @Override
+    public boolean deleteModesByAccountId(long accountId) {
+        return this.accountPreferenceRepository.deleteModesByAccountId(accountId);
+    }
 }

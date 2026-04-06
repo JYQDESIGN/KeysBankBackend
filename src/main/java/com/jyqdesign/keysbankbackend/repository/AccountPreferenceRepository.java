@@ -59,5 +59,9 @@ public interface AccountPreferenceRepository {
     boolean deleteModeKeyById(long id);
 
 
+    boolean cleanType();
+    boolean cleanMode();
 
+    boolean deleteTypesByAccountId(long accountId);
+    boolean deleteModesByAccountId(long accountId);
 }

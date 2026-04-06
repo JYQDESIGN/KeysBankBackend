@@ -34,8 +34,49 @@ public class UserRepositorySql implements UserRepository {
     }
 
     @Override
-    public void createUser(User user) {
+    public User createUser(User user) {
 
+        String sql = """
+                    INSERT INTO [USER] (
+                        pseudo,
+                        email,
+                        password,
+                        first_name,
+                        last_name,
+                        last_connection)
+                    VALUES (
+                        :pseudo,
+                        :email,
+                        :password,
+                        :firstName,
+                        :lastName,
+                        :lastConnection)
+                """;
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("pseudo", user.getPseudo())
+                .addValue("email", user.getEmail())
+                .addValue("password", user.getPassword())
+                .addValue("firstName", user.getFirstName())
+                .addValue("lastName", user.getLastName())
+                .addValue("lastConnection", user.getLastConnection());
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        namedParameterJdbcTemplate.update(
+                sql,
+                params,
+                keyHolder,
+                new String[]{"id_user"} // colonne IDENTITY
+        );
+
+        // récupérer l'id généré
+        Number generatedId = keyHolder.getKey();
+        if (generatedId != null) {
+            user.setIdUser(generatedId.longValue());
+        }
+
+        return user;
     }
 
     @Override
@@ -302,6 +343,39 @@ public class UserRepositorySql implements UserRepository {
     // =========================================================
     // PROFILE
     // =========================================================
+
+    @Override
+    public UserAccountProfile createProfile(UserAccountProfile profile) {
+
+        String sql = """
+                    INSERT INTO ACCOUNT_USER_PROFILE (
+                        id_user,
+                        id_account,
+                        user_role
+                    )
+                    OUTPUT INSERTED.id_profile
+                    VALUES (
+                        :idUser,
+                        :idAccount,
+                        :role
+                    )
+                """;
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("idUser", profile.getUser().getIdUser())
+                .addValue("idAccount", profile.getIdAccount())
+                .addValue("role", profile.getRole());
+
+        Long generatedId = namedParameterJdbcTemplate.queryForObject(
+                sql,
+                params,
+                Long.class
+        );
+
+        profile.setIdProfile(generatedId);
+
+        return profile;
+    }
 
     @Override
     public UserAccountProfile updateProfile(long id, UserAccountProfile profile) {

@@ -5,7 +5,7 @@ import com.jyqdesign.keysbankbackend.entity.*;
 import java.util.List;
 
 public interface UserService {
-    void createUser(User user);
+    User createUser(User user);
 
     List<User> readAll();
 
@@ -27,4 +27,6 @@ public interface UserService {
 
     //PROFILE
     UserAccountProfile updateProfile(long id, UserAccountProfile profile);
+
+    UserAccountProfile createProfile(UserAccountProfile profile);
 }

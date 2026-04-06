@@ -16,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class AccountPreferenceRepositorySql implements AccountPreferenceRepository {
@@ -67,6 +68,8 @@ public class AccountPreferenceRepositorySql implements AccountPreferenceReposito
                         op_type_icon AS icon
                     FROM OPERATION_TYPE
                     WHERE id_account = :idAccount
+                    ORDER BY
+                         op_type_label ASC
                 """;
 
         MapSqlParameterSource map = new MapSqlParameterSource();
@@ -149,7 +152,9 @@ public class AccountPreferenceRepositorySql implements AccountPreferenceReposito
                     FROM OPERATION_MODE om
                     LEFT JOIN MODE_KEY mk ON mk.id_op_mode = om.id_op_mode
                     WHERE om.id_account = :idAccount
-                    ORDER BY om.id_op_mode, mk.id_key
+                    ORDER BY
+                        om.op_mode_label ASC,
+                        mk.key_label ASC
                 """;
 
         MapSqlParameterSource map = new MapSqlParameterSource()
@@ -281,6 +286,10 @@ public class AccountPreferenceRepositorySql implements AccountPreferenceReposito
                     LEFT JOIN OPERATION_SUB_CATEGORY sc ON sc.id_op_category = c.id_op_category
                     LEFT JOIN SUB_CATEGORY_KEY k ON k.id_op_sub_category = sc.id_op_sub_category
                     WHERE c.id_account = :idAccount
+                    ORDER BY
+                         c.op_category_label ASC,
+                         sc.op_sub_category_label ASC,
+                         k.key_label ASC
                 """;
 
         MapSqlParameterSource map = new MapSqlParameterSource();
@@ -569,7 +578,6 @@ public class AccountPreferenceRepositorySql implements AccountPreferenceReposito
     }
 
 
-
     //=========================================================================
     // SUB CATEGORY
     //=========================================================================
@@ -663,4 +671,53 @@ public class AccountPreferenceRepositorySql implements AccountPreferenceReposito
     }
 
 
+    @Override
+    public boolean cleanType() {
+
+        String sql = """
+                    DELETE FROM OPERATION_TYPE
+                    WHERE id_account IS NULL
+                """;
+
+        int rowsAffected = namedParameterJdbcTemplate.getJdbcTemplate().update(sql);
+
+        return rowsAffected > 0;
+    }
+
+    @Override
+    public boolean cleanMode() {
+
+        String sql = """
+                    DELETE FROM OPERATION_MODE
+                    WHERE id_account IS NULL
+                """;
+
+        int rowsAffected = namedParameterJdbcTemplate.getJdbcTemplate().update(sql);
+
+        return rowsAffected > 0;
+    }
+
+    @Override
+    public boolean deleteTypesByAccountId(long idAccount) {
+        String sql = """
+                    DELETE FROM OPERATION_TYPE
+                    WHERE id_account = :idAccount
+                """;
+
+        Map<String, Object> params = Map.of("idAccount", idAccount);
+        int rowsAffected = namedParameterJdbcTemplate.update(sql, params);
+        return rowsAffected > 0;
+    }
+
+    @Override
+    public boolean deleteModesByAccountId(long idAccount) {
+        String sql = """
+                    DELETE FROM OPERATION_MODE
+                    WHERE id_account = :idAccount
+                """;
+
+        Map<String, Object> params = Map.of("idAccount", idAccount);
+        int rowsAffected = namedParameterJdbcTemplate.update(sql, params);
+        return rowsAffected > 0;
+    }
 }

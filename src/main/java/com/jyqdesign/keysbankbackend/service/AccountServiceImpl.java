@@ -1,9 +1,9 @@
 package com.jyqdesign.keysbankbackend.service;
 
 import com.jyqdesign.keysbankbackend.entity.Account;
+import com.jyqdesign.keysbankbackend.entity.User;
 import com.jyqdesign.keysbankbackend.repository.AccountPreferenceRepository;
 import com.jyqdesign.keysbankbackend.repository.AccountRepository;
-import com.jyqdesign.keysbankbackend.repository.dto.AccountPreferencesDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,14 +12,21 @@ import java.util.List;
 public class AccountServiceImpl implements AccountService{
 
     AccountRepository accountRepository;
+    AccountPreferenceRepository accountPreferenceRepository;
 
-    public AccountServiceImpl(AccountRepository accountRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository, AccountPreferenceRepository accountPreferenceRepository) {
         this.accountRepository = accountRepository;
+        this.accountPreferenceRepository = accountPreferenceRepository;
     }
 
     @Override
-    public void createAccount(Account account) {
-
+    public Account createAccount(Account newAccount) {
+        Account account = this.accountRepository.createAccount(newAccount);
+        //create defaults preferences
+        this.accountPreferenceRepository.createDefaultModes(account.getIdAccount());
+        this.accountPreferenceRepository.createDefaulTypes(account.getIdAccount());
+        this.accountPreferenceRepository.createDefaultCategories(account.getIdAccount());
+        return account;
     }
 
     @Override
@@ -33,12 +40,12 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public void updateAccount(Account account) {
-
+    public Account updateAccount(Account account) {
+        return null;
     }
 
     @Override
-    public void deleteAccount(long id) {
-
+    public boolean deleteAccount(long id) {
+        return this.accountRepository.deleteAccount(id);
     }
 }

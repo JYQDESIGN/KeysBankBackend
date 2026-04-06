@@ -24,7 +24,19 @@ public class UserController {
         return userService.readAll();
     }
 
+    // USER
+
+    @PostMapping("")
+    public User createUser(@RequestBody User newUser) {
+        return userService.createUser(newUser);
+    }
+
     // PROFILE
+
+    @PostMapping("/profile")
+    public UserAccountProfile createProfile(@RequestBody UserAccountProfile profile) {
+        return userService.createProfile(profile);
+    }
 
     @PutMapping("/profile/{id}")
     public UserAccountProfile updateProfile(
