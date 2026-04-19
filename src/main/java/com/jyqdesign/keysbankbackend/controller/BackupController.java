@@ -11,8 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tools.jackson.databind.ObjectMapper;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/backup")
@@ -53,6 +55,29 @@ public class BackupController {
 
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd__HH-mm-ss"));
         String filename = "backup_operations_" + account.getName() + "_" + dto.getYear() + "__" + timestamp + ".json";
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + filename + "\"")
+                .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION) // ⚡ très important
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(json);
+    }
+
+    @GetMapping("/full/{accountId}")
+    public ResponseEntity<byte[]> fullExport(@PathVariable Long accountId) throws Exception {
+
+        //get account name
+        Account account = this.accountService.readById(accountId);
+        //current year
+        int currentYear = LocalDate.now().getYear();
+        ArrayList<BackupOperationDTO> fullOps = new ArrayList<>();
+        for(long y = account.getSinceYear() ; y <= currentYear ; y++) {
+            fullOps.add(service.exportOperations(accountId, y));
+        }
+        byte[] json = new ObjectMapper().writeValueAsBytes(fullOps);
+
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd__HH-mm-ss"));
+        String filename = "backup_full_operations_" + account.getName() + "_from" +account.getSinceYear()+ "to" + currentYear + "__" + timestamp + ".json";
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + filename + "\"")

@@ -11,7 +11,9 @@ public interface AccountRepository {
 
     Account readById(long id);
 
-    Account updateAccount(Account account);
+    //Account updateAccount(Account account);
 
     boolean deleteAccount(long id);
+
+    Account updateAccountById(long id, Account updatedAccount);
 }

@@ -40,12 +40,12 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public Account updateAccount(Account account) {
-        return null;
+    public boolean deleteAccount(long id) {
+        return this.accountRepository.deleteAccount(id);
     }
 
     @Override
-    public boolean deleteAccount(long id) {
-        return this.accountRepository.deleteAccount(id);
+    public Account updateAccountById(long id, Account updatedAccount) {
+        return this.accountRepository.updateAccountById(id, updatedAccount);
     }
 }

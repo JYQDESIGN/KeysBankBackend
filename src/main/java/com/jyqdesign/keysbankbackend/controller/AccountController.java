@@ -1,6 +1,7 @@
 package com.jyqdesign.keysbankbackend.controller;
 
 import com.jyqdesign.keysbankbackend.entity.Account;
+import com.jyqdesign.keysbankbackend.entity.Balance;
 import com.jyqdesign.keysbankbackend.entity.User;
 import com.jyqdesign.keysbankbackend.repository.dto.AccountPreferencesDTO;
 import com.jyqdesign.keysbankbackend.service.AccountService;
@@ -31,6 +32,13 @@ public class AccountController {
         System.out.println("create account: "+newAccount);
         //return null;
         return accountService.createAccount(newAccount);
+    }
+
+    @PutMapping("/{id}")
+    public Account updateAccountById(
+            @PathVariable long id,
+            @RequestBody Account updatedAccount) {
+        return accountService.updateAccountById(id, updatedAccount);
     }
 
     @DeleteMapping("/{id}")

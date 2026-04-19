@@ -143,11 +143,6 @@ public class AccountRepositorySql implements AccountRepository {
     }
 
     @Override
-    public Account updateAccount(Account account) {
-        return null;
-    }
-
-    @Override
     public boolean deleteAccount(long id) {
         String sql = """
                     DELETE FROM ACCOUNT
@@ -159,5 +154,62 @@ public class AccountRepositorySql implements AccountRepository {
         int rowsAffected = namedParameterJdbcTemplate.update(sql, params);
 
         return rowsAffected > 0;
+    }
+
+    @Override
+    public Account updateAccountById(long id, Account updatedAccount) {
+
+        String sql = """
+                    UPDATE ACCOUNT SET
+                        name = :name,
+                        bank = :bank,
+                        reference = :reference,
+                        current_solde = :currentSolde,
+                        last_update = :lastUpdate,
+                        since_year = :sinceYear,
+                        initial_balance = :initialBalance,
+                        csv_import_folder = :csvImportFolder,
+                        csv_row_ignored = :csvRowIgnored,
+                        csv_row_date = :csvRowDate,
+                        csv_row_solde = :csvRowSolde,
+                        csv_column_number = :csvColumnNumber,
+                        csv_column_date = :csvColumnDate,
+                        csv_date_format = :csvDateFormat,
+                        csv_column_description = :csvColumnDescription,
+                        csv_column_credit = :csvColumnCredit,
+                        csv_column_debit = :csvColumnDebit,
+                        csv_column_value = :csvColumnValue
+                    WHERE id_account = :id
+                """;
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("name", updatedAccount.getName())
+                .addValue("bank", updatedAccount.getBank())
+                .addValue("reference", updatedAccount.getReference())
+                .addValue("currentSolde", updatedAccount.getCurrentSolde())
+                .addValue("lastUpdate", updatedAccount.getLastUpdate())
+                .addValue("sinceYear", updatedAccount.getSinceYear())
+                .addValue("initialBalance", updatedAccount.getInitialBalance())
+                .addValue("csvImportFolder", updatedAccount.getCsvImportFolder())
+                .addValue("csvRowIgnored", updatedAccount.getCsvRowIgnored())
+                .addValue("csvRowDate", updatedAccount.getCsvRowDate())
+                .addValue("csvRowSolde", updatedAccount.getCsvRowSolde())
+                .addValue("csvColumnNumber", updatedAccount.getCsvColumnNumber())
+                .addValue("csvColumnDate", updatedAccount.getCsvColumnDate())
+                .addValue("csvDateFormat", updatedAccount.getCsvDateFormat())
+                .addValue("csvColumnDescription", updatedAccount.getCsvColumnDescription())
+                .addValue("csvColumnCredit", updatedAccount.getCsvColumnCredit())
+                .addValue("csvColumnDebit", updatedAccount.getCsvColumnDebit())
+                .addValue("csvColumnValue", updatedAccount.getCsvColumnValue());
+
+        int rows = namedParameterJdbcTemplate.update(sql, params);
+
+        if (rows == 0) {
+            return null; // ou throw exception
+        }
+
+        updatedAccount.setIdAccount(id);
+        return updatedAccount;
     }
 }

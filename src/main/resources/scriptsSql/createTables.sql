@@ -210,34 +210,38 @@ CREATE TABLE OPERATION
 ---------------------------------------------------------------------------
 
 ALTER TABLE ACCOUNT_USER_PROFILE
-    ADD CONSTRAINT fk_user FOREIGN KEY (id_user) REFERENCES [USER] (id_user)
-        ON DELETE SET NULL
-        ON UPDATE CASCADE
+ADD CONSTRAINT fk_user FOREIGN KEY (id_user) REFERENCES [USER] (id_user)
+ON DELETE CASCADE
 
 ALTER TABLE ACCOUNT_USER_PROFILE
-    ADD CONSTRAINT fk_account FOREIGN KEY (id_account) REFERENCES [ACCOUNT] (id_account)
-        ON DELETE SET NULL
-        ON UPDATE CASCADE
+ADD CONSTRAINT fk_account 
+FOREIGN KEY (id_account) 
+REFERENCES [ACCOUNT] (id_account)
+ON DELETE CASCADE
 
 ALTER TABLE CREDIT_CARD
-    ADD CONSTRAINT fk_account_user_profile_card FOREIGN KEY (id_account_user_profile) REFERENCES ACCOUNT_USER_PROFILE (id_profile)
-        ON DELETE SET NULL
-        ON UPDATE CASCADE
+ADD CONSTRAINT fk_account_user_profile_card 
+FOREIGN KEY (id_account_user_profile) 
+REFERENCES ACCOUNT_USER_PROFILE (id_profile)
+ON DELETE CASCADE
 
 ALTER TABLE CHECK_BOOK
-    ADD CONSTRAINT fk_account_user_profile_book FOREIGN KEY (id_account_user_profile) REFERENCES ACCOUNT_USER_PROFILE (id_profile)
-        ON DELETE SET NULL
-        ON UPDATE CASCADE
+ADD CONSTRAINT fk_account_user_profile_book 
+FOREIGN KEY (id_account_user_profile) 
+REFERENCES ACCOUNT_USER_PROFILE (id_profile)
+ON DELETE CASCADE
 
 ALTER TABLE OPERATION_TYPE
-    ADD CONSTRAINT fk_account_op_type FOREIGN KEY (id_account) REFERENCES [ACCOUNT] (id_account)
-        ON DELETE SET NULL
-        ON UPDATE CASCADE
+ADD CONSTRAINT fk_account_op_type 
+FOREIGN KEY (id_account) 
+REFERENCES [ACCOUNT] (id_account)
+ON DELETE CASCADE
 
 ALTER TABLE [OPERATION_MODE]
-    ADD CONSTRAINT fk_account_op_mode FOREIGN KEY (id_account) REFERENCES [ACCOUNT] (id_account)
-        ON DELETE SET NULL
-        ON UPDATE CASCADE
+ADD CONSTRAINT fk_account_op_mode 
+FOREIGN KEY (id_account) 
+REFERENCES [ACCOUNT] (id_account)
+ON DELETE CASCADE
 
 ALTER TABLE OPERATION_CATEGORY
 ADD CONSTRAINT fk_account_op_category 
