@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class SubCategoryDTO {
-    private String id;
+    private Long id;
     private String label;
     private String type;
     private String color;

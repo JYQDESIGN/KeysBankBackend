@@ -160,7 +160,7 @@ public class BackupRepositorySql implements BackupRepository {
     // ================= SUB CATEGORY =================
 
     @Override
-    public List<SubCategory> findSubCategories(List<String> categoryIds) {
+    public List<SubCategory> findSubCategories(List<Long> categoryIds) {
 
         if (categoryIds == null || categoryIds.isEmpty()) {
             return Collections.emptyList();
@@ -187,7 +187,7 @@ public class BackupRepositorySql implements BackupRepository {
     // ================= SUB CATEGORY KEY =================
 
     @Override
-    public List<SubCategoryKey> findSubCategoryKeys(List<String> subCategoryIds) {
+    public List<SubCategoryKey> findSubCategoryKeys(List<Long> subCategoryIds) {
 
         if (subCategoryIds == null || subCategoryIds.isEmpty()) {
             return Collections.emptyList();

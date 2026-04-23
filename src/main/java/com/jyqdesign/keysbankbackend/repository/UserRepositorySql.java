@@ -407,4 +407,13 @@ public class UserRepositorySql implements UserRepository {
         return updatedProfile;
     }
 
+    @Override
+    public boolean deleteProfile(long id) {
+        String sql = """
+                    DELETE FROM ACCOUNT_USER_PROFILE
+                    WHERE id_profile = ?
+                """;
+        return jdbcTemplate.update(sql, id) > 0;
+    }
+
 }

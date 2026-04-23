@@ -6,7 +6,8 @@ import java.util.List;
 
 @Data
 public class CategoryDTO {
-    private String id;
+    private Long id;
+    private Long idAccount;
     private String label;
     private String type;
     private String color;

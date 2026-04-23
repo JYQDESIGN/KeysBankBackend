@@ -10,7 +10,8 @@ import tools.jackson.databind.ObjectMapper;
 
 @Data
 public class Category {
-    private String idCategory;
+    private Long idAccount;
+    private Long idCategory;
     private String label;
     private String type;
     private String color;

@@ -22,9 +22,9 @@ public interface BackupRepository {
 
     List<Category> findCategories(Long accountId);
 
-    List<SubCategory> findSubCategories(List<String> categoryIds);
+    List<SubCategory> findSubCategories(List<Long> categoryIds);
 
-    List<SubCategoryKey> findSubCategoryKeys(List<String> subCategoryIds);
+    List<SubCategoryKey> findSubCategoryKeys(List<Long> subCategoryIds);
 
     List<Operation> findOperationsByAccountAndYear(long accountId, long year);
 

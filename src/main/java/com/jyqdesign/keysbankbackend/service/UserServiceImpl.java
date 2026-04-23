@@ -90,6 +90,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public boolean deleteProfile(long id) {
+        return this.userRepository.deleteProfile(id);
+    }
+
+    @Override
     public UserAccountProfile updateProfile(long id, UserAccountProfile profile) {
         return this.userRepository.updateProfile(id, profile);
     }

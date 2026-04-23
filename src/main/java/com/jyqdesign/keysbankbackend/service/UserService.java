@@ -29,4 +29,6 @@ public interface UserService {
     UserAccountProfile updateProfile(long id, UserAccountProfile profile);
 
     UserAccountProfile createProfile(UserAccountProfile profile);
+
+    boolean deleteProfile(long id);
 }

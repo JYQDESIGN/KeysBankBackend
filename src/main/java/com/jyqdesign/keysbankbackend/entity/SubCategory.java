@@ -3,8 +3,8 @@ import java.util.List;
 import lombok.Data;
 @Data
 public class SubCategory {
-    private String idSubCategory;
-    private String idCategory;
+    private Long idSubCategory;
+    private Long idCategory;
     private String label;
     private String type;
     private String color;

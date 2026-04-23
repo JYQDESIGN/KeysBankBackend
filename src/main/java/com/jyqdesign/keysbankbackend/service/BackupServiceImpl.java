@@ -78,13 +78,13 @@ public class BackupServiceImpl implements BackupService {
         // ================= CATEGORIES =================
         List<Category> categories = repository.findCategories(accountId);
 
-        List<String> categoryIds = categories.stream()
+        List<Long> categoryIds = categories.stream()
                 .map(Category::getIdCategory)
                 .toList();
 
         List<SubCategory> subs = repository.findSubCategories(categoryIds);
 
-        List<String> subIds = subs.stream()
+        List<Long> subIds = subs.stream()
                 .map(SubCategory::getIdSubCategory)
                 .toList();
 
@@ -97,7 +97,7 @@ public class BackupServiceImpl implements BackupService {
             sub.setKeys(keysBySub.getOrDefault(sub.getIdSubCategory(), List.of()));
         }
 
-        Map<String, List<SubCategory>> subsByCategory =
+        Map<Long, List<SubCategory>> subsByCategory =
                 subs.stream().collect(Collectors.groupingBy(SubCategory::getIdCategory));
 
         for (Category cat : categories) {

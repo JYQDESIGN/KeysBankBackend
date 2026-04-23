@@ -37,4 +37,6 @@ public interface UserRepository {
 
     UserAccountProfile createProfile(UserAccountProfile profile);
     UserAccountProfile updateProfile(long id, UserAccountProfile profile);
+
+    boolean deleteProfile(long id);
 }

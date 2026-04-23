@@ -45,6 +45,11 @@ public class UserController {
         return userService.updateProfile(id, profile);
     }
 
+    @DeleteMapping("/profile/{id}")
+    public boolean deleteProfile(@PathVariable long id) {
+        return userService.deleteProfile(id);
+    }
+
     // CREDIT CARD
 
     @PostMapping("/card")

@@ -15,16 +15,16 @@ public class CategoryResultSetExtractor implements ResultSetExtractor<List<Categ
     public List<Category> extractData(ResultSet rs) throws SQLException {
 
         // Map pour éviter doublons de categories
-        Map<String, Category> categoryMap = new LinkedHashMap<>();
+        Map<Long, Category> categoryMap = new LinkedHashMap<>();
 
         // Map pour éviter doublons de subCategories
-        Map<String, SubCategory> subCategoryMap = new HashMap<>();
+        Map<Long, SubCategory> subCategoryMap = new HashMap<>();
 
         while (rs.next()) {
 
             // CATEGORY
 
-            String categoryId = rs.getString("idCategory");
+            Long categoryId = rs.getLong("idCategory");
 
             Category category = categoryMap.get(categoryId);
 
@@ -42,7 +42,7 @@ public class CategoryResultSetExtractor implements ResultSetExtractor<List<Categ
 
             // SUB CATEGORY
 
-            String subCategoryId = rs.getString("idSubCategory");
+            Long subCategoryId = rs.getLong("idSubCategory");
 
             SubCategory subCategory = null;
 

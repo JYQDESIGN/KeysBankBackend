@@ -504,8 +504,8 @@ public class AccountPreferenceRepositorySql implements AccountPreferenceReposito
 
         String sql = """
                     INSERT INTO OPERATION_CATEGORY
-                    (op_category_label, op_category_color, op_category_type)
-                    VALUES (?, ?, ?)
+                    (id_account, op_category_label, op_category_color, op_category_type)
+                    VALUES (?, ?, ?, ?)
                 """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -517,9 +517,10 @@ public class AccountPreferenceRepositorySql implements AccountPreferenceReposito
                     Statement.RETURN_GENERATED_KEYS
             );
 
-            ps.setString(1, newCategory.getLabel());
-            ps.setString(2, newCategory.getColor());
-            ps.setString(3, newCategory.getType());
+            ps.setLong(1, newCategory.getIdAccount());
+            ps.setString(2, newCategory.getLabel());
+            ps.setString(3, newCategory.getColor());
+            ps.setString(4, newCategory.getType());
 
             return ps;
 
@@ -528,7 +529,7 @@ public class AccountPreferenceRepositorySql implements AccountPreferenceReposito
         Number id = keyHolder.getKey();
 
         if (id != null) {
-            newCategory.setIdCategory(String.valueOf(id.longValue()));
+            newCategory.setIdCategory(id.longValue());
         }
 
         return newCategory;
@@ -556,7 +557,7 @@ public class AccountPreferenceRepositorySql implements AccountPreferenceReposito
             return null;
         }
 
-        updatedCategory.setIdCategory(String.valueOf(id));
+        updatedCategory.setIdCategory(id);
 
         return updatedCategory;
     }
@@ -603,7 +604,7 @@ public class AccountPreferenceRepositorySql implements AccountPreferenceReposito
                     Statement.RETURN_GENERATED_KEYS
             );
 
-            ps.setLong(1, Long.parseLong(newSubCategory.getIdCategory())); // id category parent
+            ps.setLong(1, newSubCategory.getIdCategory()); // id category parent
             ps.setString(2, newSubCategory.getLabel());
             ps.setString(3, newSubCategory.getColor());
             ps.setString(4, newSubCategory.getType());
@@ -615,7 +616,7 @@ public class AccountPreferenceRepositorySql implements AccountPreferenceReposito
         Number id = keyHolder.getKey();
 
         if (id != null) {
-            newSubCategory.setIdSubCategory(String.valueOf(id.longValue()));
+            newSubCategory.setIdSubCategory(id.longValue());
         }
 
         return newSubCategory;
@@ -643,7 +644,7 @@ public class AccountPreferenceRepositorySql implements AccountPreferenceReposito
             return null;
         }
 
-        updatedSubCategory.setIdSubCategory(String.valueOf(id));
+        updatedSubCategory.setIdSubCategory(id);
 
         return updatedSubCategory;
     }
